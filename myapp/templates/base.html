@@ -8,18 +8,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookstore | Trade Books</title>
 
+    <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Iconify for Icons -->
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <!-- Custom CSS -->
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-success">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="index">Bookstore</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+  <body class="d-flex flex-column min-vh-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
+          <span class="iconify" data-icon="mdi:book" data-inline="false"></span> Bookstore
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+          <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Home</a>
+              <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">Home</a>
             </li>
             {% if current_user.is_authenticated %}
             <li class="nav-item">
@@ -29,35 +39,49 @@
               <a class="nav-link" href="{{ url_for('logout') }}">Log out</a>
             </li>
             {% else %}
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('login') }}">Log in</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('signup') }}">Sign up</a>
-              </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('login') }}">Log in</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('signup') }}">Sign up</a>
+            </li>
             {% endif %}
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('browse') }}">Browse</a>
             </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('books') }}">Sell</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('buy') }}">Buy</a>
-              </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('books') }}">Sell</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('buy') }}">Buy</a>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
+
+    <!-- Flash Messages -->
+    <div class="container mt-3">
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">
-              {{ message }}
-            </div>
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
           {% endfor %}
         {% endif %}
       {% endwith %}
-      {% block content %} {% endblock %}
+    </div>
+
+    <!-- Content -->
+  <main class="container mt-5">
+    {% block content %}{% endblock %}
+  </main>
+
+    <!-- Footer -->
+    <footer class="bg-success text-white text-center py-3 mt-auto">
+      <p>&copy; 2024 Bookstore | Trade with ease. Built by Gaia.</p>
+    </footer>
   </body>
 </html>

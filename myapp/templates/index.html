@@ -1,11 +1,48 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1> welcome to the homepage </h1>
-<h3> buy, sell, browse, suggest, BOOKS!!! </h3>
-{% if current_user.is_authenticated %}
-<div class="d-grid gap-2">
-<a class="btn btn-primary" href="{{ url_for('books') }}">Post books for sale</a>
+<!-- Hero Section -->
+<div class="text-center p-5 bg-light rounded shadow-sm mb-5">
+  <h1 class="display-4 fw-bold text-success">Welcome to the Godolphin Bookstore!</h1>
+  <p class="lead">Trade books with your peers via a credit-based system. Earn credits by selling books and use them to purchase new ones, all without money!</p>
+  {% if current_user.is_authenticated %}
+  <a class="btn btn-success btn-lg mt-3" href="{{ url_for('books') }}">Post a Book for Sale</a>
+  {% else %}
+  <a class="btn btn-primary btn-lg mt-3" href="{{ url_for('signup') }}">Join Now</a>
+  {% endif %}
 </div>
-{% endif %}
+
+<!-- Features Section -->
+<div class="row text-center">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <span class="iconify" data-icon="mdi:book-open-page-variant" data-inline="false" style="font-size: 48px; color: #28a745;"></span>
+        <h5 class="card-title mt-3">Browse Books</h5>
+        <p class="card-text">Discover books available for trade from your fellow students.</p>
+        <a href="{{ url_for('browse') }}" class="btn btn-outline-success">Browse</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <span class="iconify" data-icon="mdi:cash-multiple" data-inline="false" style="font-size: 48px; color: #007bff;"></span>
+        <h5 class="card-title mt-3">Sell Books</h5>
+        <p class="card-text">Earn money by selling your used books easily.</p>
+        <a href="{{ url_for('books') }}" class="btn btn-outline-primary">Sell</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <span class="iconify" data-icon="mdi:cart" data-inline="false" style="font-size: 48px; color: #dc3545;"></span>
+        <h5 class="card-title mt-3">Buy Books</h5>
+        <p class="card-text">Save money by buying affordable books from peers.</p>
+        <a href="{{ url_for('buy') }}" class="btn btn-outline-danger">Buy</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
