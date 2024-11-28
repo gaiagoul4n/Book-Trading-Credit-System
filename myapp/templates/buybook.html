@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <h1> Buy this book </h1>
+
+
+            <p class="article-content">{{ book.Book.title }}</p>
+            <p class="article-content">{{ book.Book.author }}</p>
+            <p class="article-content">{{ book.Book.genre }}</p>
+            <p class="article-content">{{ book.BooksForSale.price }} Credits</p>
+            <p class="article-content">{{ book.Book.picture }}</p>
+
+            <img class="img-fluid" src="{{ url_for('static', filename='book_pics/' + book.Book.picture) }}">
+
+            <p class="article-content">You have {{ credit }} credits</p>
+
+
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+            <br>
+            <br>
+
+            <a class="btn btn-info" href="{{url_for('index')}}">Cancel</a>
+
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Username: {{ current_user.username }}</h1>
+<h3>Your credit: {{ current_user.credit }}</h3>
+
+<br>
+<br>
+<h3>Your past purchases:</h3>
+<div class="row">
+    {% for book in purchases %}
+          <div class="col-md-3">
+              <p class="article-content">{{ book.Book.title }}</p>
+              <p class="article-content">Sold by: {{ book.User.username}}</p>
+              <p class="article-content">{{ book.Book.author }}</p>
+              <p class="article-content">{{ book.Book.genre }}</p>
+              <p class="article-content">Bought for {{ book.BooksForSale.price }} Credits</p>
+              <p class="article-content">{{ book.BooksForSale.style }}</p>
+              <p class="article-content">{{ book.BooksForSale.condition }}</p>
+              <img class="img-fluid" src="{{ url_for('static', filename='book_pics/' + book.Book.picture) }}">
+
+          </div>
+
+        {%  if loop.index is divisibleby 3 and not loop.last %}
+        </div> <br> <div class="row">
+          {% endif %}
+
+    {% endfor %}
+</div>
+
+<br>
+<p class="article-content">Total credits spent: {{ total_credits_spent }}</p>
+<br>
+<br>
+
+<h3>Your past sales:</h3>
+<div class="row">
+    {% for book in sales %}
+          <div class="col-md-3">
+              <p class="article-content">{{ book.Book.title }}</p>
+              <p class="article-content">Bought by: {{ book.User.username }}</p>
+              <p class="article-content">{{ book.Book.author }}</p>
+              <p class="article-content">{{ book.Book.genre }}</p>
+              <p class="article-content">Sold for {{ book.BooksForSale.price }} Credits</p>
+              <p class="article-content">{{ book.BooksForSale.style }}</p>
+              <p class="article-content">{{ book.BooksForSale.condition }}</p>
+              <img class="img-fluid" src="{{ url_for('static', filename='book_pics/' + book.Book.picture) }}">
+
+
+              <br>
+          </div>
+
+        {%  if loop.index is divisibleby 3 and not loop.last %}
+        </div> <br> <div class="row">
+          {% endif %}
+
+    {% endfor %}
+</div>
+
+<br>
+<p class="article-content">Total credits made: {{ total_credits_made }}</p>
+
+{% endblock content %}

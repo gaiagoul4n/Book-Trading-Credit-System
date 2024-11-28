@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> check by title </h1>
+<div class="content-section">
+  <a class="btn btn-info" href="{{url_for('sell')}}">Add new book</a>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <div class="form-group">
+                        {{ form.title.label(class="form-control-label") }}
+                        {{ form.title(class="form-title form-control-lg") }}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+</div>
+
+<div class="row">
+    {% for book in books %}
+          <div class="col-md-3">
+              <p class="article-content">{{ book.title }}</p>
+              <p class="article-content">{{ book.author }}</p>
+              <p class="article-content">{{ book.genre }}</p>
+              <img class="img-fluid" src="{{ url_for('static', filename='book_pics/' + book.picture) }}">
+              <a class="btn btn-info" href="{{url_for('booksforsale', selling_book_id=book.id)}}">Select</a>
+          </div>
+
+        {%  if loop.index is divisibleby 3 and not loop.last %}
+        </div> <br> <div class="row">
+          {% endif %}
+
+    {% endfor %}
+</div>
+{% endblock content %}
+<!-- will display pics of books and have select button that will take user to books for sale form -->
+<!-- will have check by title form above display and when you press submit it shows the books that match -->

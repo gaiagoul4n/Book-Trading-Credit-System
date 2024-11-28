@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> Buy a book </h1>
+
+<div class="row">
+    {% for book in books %}
+          <div class="col-md-3">
+              <p class="article-content">{{ book.Book.title }}</p>
+              <p class="article-content">Posted by: {{ book.User.username }}</p>
+              <p class="article-content">{{ book.Book.author }}</p>
+              <p class="article-content">{{ book.Book.genre }}</p>
+              <p class="article-content">{{ book.BooksForSale.price }} Credits</p>
+              <p class="article-content">{{ book.BooksForSale.style }}</p>
+              <p class="article-content">{{ book.BooksForSale.condition }}</p>
+              <img class="img-fluid" src="{{ url_for('static', filename='book_pics/' + book.Book.picture) }}">
+              <a class="btn btn-info" href="{{url_for('buybook', buying_book_id=book.BooksForSale.id)}}">Buy</a>
+          </div>
+
+        {%  if loop.index is divisibleby 3 and not loop.last %}
+        </div> <br> <div class="row">
+          {% endif %}
+
+    {% endfor %}
+</div>
+
+
+{% endblock content %}

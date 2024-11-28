@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> Welcome, sell a book :) </h1>
+<div class="content-section">
+        <form method="POST" action=" " enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <div class="form-group">
+                        {{ form.title.label(class="form-control-label") }}
+                        {{ form.title(class="form-title form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.author.label(class="form-control-label") }}
+                    {{ form.author(class="form-author form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.genre.label(class="form-control-label") }}
+                    {{ form.genre(class="form-genre form-control-lg") }}
+                </div>
+                <div class="media">
+                    {{ form.picture.label() }}
+                    {{ form.picture(class="form-control-file") }}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock %}
