@@ -67,36 +67,57 @@ def save_picture(form_picture):
 @app.route('/sell', methods=['GET', 'POST'])
 @login_required
 def sell():
-    if current_user.is_authenticated:
-        form = BookForm()
-        if form.validate_on_submit():
-            flash('Please enter next details', 'success')
-            book = Book(title=form.title.data, author = form.author.data, genre=form.genre.data, picture=form.picture.data.filename)
-            db.session.add(book)
-            #picture_file calls the procedure save_picture
-            picture_file = save_picture(form.picture.data)
-            print(book)
-            db.session.commit()
-            return redirect(url_for('booksforsale', selling_book_id = book.id))
-        return render_template('sell.html', title='Post Book', form=form)
-    else:
-            flash('Please login to sell books.', 'danger')
-            form = LoginForm()
-            return render_template('sell.html', title='sell', form=form)
+    book_form = BookForm()
+    books_for_sale_form = BooksForSaleForm()
+    book_id = request.args.get('book_id')  # Get book_id if passed from books.html
+    pre_filled_book = None
 
-#final steps of a book being posted for sale - details of book entered and saved to BooksForSale table
-@app.route('/booksforsale/<int:selling_book_id>', methods=['GET', 'POST'])
-@login_required
-def booksforsale(selling_book_id):
-        form = BooksForSaleForm()
-        if form.validate_on_submit():
-            flash('Your book has been created!', 'success')
-            bookforsale = BooksForSale(price=form.price.data, style=form.style.data,
-                    condition=form.condition.data, seller_id = current_user.id, book_id = selling_book_id)
-            db.session.add(bookforsale)
+    # Check if the user selected an existing book
+    if book_id:
+        pre_filled_book = Book.query.get(book_id)
+        if pre_filled_book:
+            # Pre-fill BookForm fields with existing book details
+            book_form.title.data = pre_filled_book.title
+            book_form.author.data = pre_filled_book.author
+            book_form.genre.data = pre_filled_book.genre
+
+    # Handle form submission
+    if book_form.validate_on_submit() and books_for_sale_form.validate_on_submit():
+        # Save picture only for new books
+        if not pre_filled_book:
+            picture_file = save_picture(book_form.picture.data)
+            book = Book(
+                title=book_form.title.data,
+                author=book_form.author.data,
+                genre=book_form.genre.data,
+                picture=picture_file,
+            )
+            db.session.add(book)
             db.session.commit()
-            return redirect(url_for('index'))
-        return render_template('booksforsale.html', title='Post book', form=form)
+        else:
+            book = pre_filled_book
+
+        # Save sale-specific details
+        book_for_sale = BooksForSale(
+            price=books_for_sale_form.price.data,
+            style=books_for_sale_form.style.data,
+            condition=books_for_sale_form.condition.data,
+            seller_id=current_user.id,
+            book_id=book.id,
+        )
+        db.session.add(book_for_sale)
+        db.session.commit()
+
+        flash('Book posted for sale successfully!', 'success')
+        return redirect(url_for('index'))
+
+    return render_template(
+        'sell.html',
+        title='Post Book for Sale',
+        book_form=book_form,
+        books_for_sale_form=books_for_sale_form,
+        pre_filled_book=pre_filled_book,
+    )
 
 
 @app.route('/logout')
