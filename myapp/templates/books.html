@@ -1,41 +1,67 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='books.css') }}">
+{% endblock %}
+
 {% block content %}
-<div class="container my-5">
-    <h1 class="text-center text-primary mb-4">Find a Book to List for Sale</h1>
-    <p class="text-center lead">Search for an existing book in the system or select from the list below to pre-fill details.</p>
+<h1 class="page-title">Discover Books to Trade</h1>
+<p class="page-subtitle">Select or search for the book you'd like to sell to get started!</p>
 
-    <div class="content-section mb-5">
-        <form method="POST" action="" enctype="multipart/form-data" class="p-4 shadow-sm rounded bg-light">
-            {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                <div class="mb-3">
-                    {{ form.title.label(class="form-label") }}
-                    {{ form.title(class="form-control form-control-lg") }}
-                </div>
-            </fieldset>
-            <div class="d-grid">
-                {{ form.submit(class="btn btn-primary btn-lg") }}
-            </div>
-        </form>
+<div class="content-section search-form">
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+      <div class="form-group">
+        {{ form.title(class="form-title", placeholder="Search by title...") }}
+      </div>
+    </fieldset>
+    <div class="form-group">
+      {{ form.submit(class="btn btn-info") }}
     </div>
+  </form>
+</div>
 
-    <div class="row g-4">
-        {% for book in books %}
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <img class="card-img-top img-thumbnail" src="{{ url_for('static', filename='book_pics/' + book.picture) }}" alt="Book Image" style="height: 250px; object-fit: cover;">
+<div class="row">
+    {% for book in books.items %}
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex justify-content-center">
+            <div class="card">
+                <img class="card-img-top" src="{{ url_for('static', filename='book_pics/' + book.picture) }}" alt="{{ book.title }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ book.title }}</h5>
-                    <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
-                    <p class="card-text"><strong>Genre:</strong> {{ book.genre }}</p>
-                    <a href="{{ url_for('sell', book_id=book.id) }}" class="btn btn-info btn-sm">Select</a>
+                    <p class="card-text">{{ book.author }}</p>
+                    <p class="card-text">{{ book.genre }}</p>
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('sell', book_id=book.id) }}">Select</a>
                 </div>
             </div>
         </div>
-        {% endfor %}
-    </div>
+        {% if loop.index is divisibleby 4 and not loop.last %}
+        </div> <div class="row">
+        {% endif %}
+    {% endfor %}
 </div>
+
+<nav aria-label="Page navigation">
+  <ul class="pagination justify-content-center">
+    {% if books.has_prev %}
+      <li class="page-item">
+        <a class="page-link" href="{{ url_for('books', page=books.prev_num) }}">Previous</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">Previous</span>
+      </li>
+    {% endif %}
+
+    {% if books.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="{{ url_for('books', page=books.next_num) }}">Next</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">Next</span>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
 {% endblock %}
-<!-- will display pics of books and have select button that will take user to books for sale form -->
-<!-- will have check by title form above display and when you press submit it shows the books that match -->

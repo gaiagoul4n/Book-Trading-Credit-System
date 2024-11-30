@@ -51,11 +51,15 @@ def browse():
 @app.route('/books', methods=['GET', 'POST'])
 def books():
     form = CheckByTitleForm()
-    books = Book.query.all()
-    if form.validate_on_submit():
-        search_title = form.title.data
-        search = "%{}%".format(search_title)
-        books = Book.query.filter(Book.title.like(search)).all()
+    page = request.args.get('page', 1, type=int)  # Get the current page from query parameters
+    books_query = Book.query  # Base query
+    
+    if form.validate_on_submit(): # If searching by title
+        search_title = form.title.data.strip()
+        search = f"%{search_title}%"
+        books_query = books_query.filter(Book.title.ilike(search))  # Case-insensitive search
+
+    books = books_query.paginate(page=page, per_page=32)  # Limit results to 32 books per page
     return render_template('books.html', form=form, books=books)
 
 def save_picture(form_picture):

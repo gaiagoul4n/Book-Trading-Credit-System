@@ -1,0 +1,105 @@
+.card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    overflow: hidden;
+    height: 420px; /* Fixed height for consistency */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth animation */
+}
+
+.card:hover {
+    transform: scale(1.02); /* Slight zoom effect on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.card-body {
+    padding: 1rem;
+    background-color: #f9f9f9; /* Light background */
+    text-align: center;
+    flex-grow: 1;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #34495e; /* Neutral but strong text color */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Shorten long text */
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card .btn {
+    background-color: #1abc9c; /* A warm green tone */
+    color: #fff;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.card .btn:hover {
+    background-color: #16a085; /* Slightly darker green on hover */
+}
+
+.card img {
+    width: 100%; /* Fit the width of the card */
+    height: 250px; /* Fixed height for all images */
+    object-fit: cover; /* Ensures the image fits well and maintains aspect ratio */
+    border-radius: 8px; /* Slightly rounded corners */
+}
+
+
+
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #2c3e50; /* A calm, welcoming color */
+    margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #7f8c8d; /* Softer tone for explanation */
+    margin-bottom: 2rem;
+}
+
+
+.search-form {
+    background-color: #ecf0f1; /* Soft gray background */
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.search-form .form-title {
+    width: 60%; /* Larger search bar */
+    margin: 0 auto 1rem auto;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-form .btn-info {
+    background-color: #3498db; /* Blue button */
+    color: #fff;
+    border-radius: 5px;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.search-form .btn-info:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}

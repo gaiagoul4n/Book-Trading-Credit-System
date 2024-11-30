@@ -16,6 +16,17 @@ def download_image(url, filename):
     except Exception as e:
         print(f"Error downloading image from {url}: {e}")
         return "default.jpg"  # Use a default image for failed downloads
+    
+
+# Function to clean author names
+def clean_author(author):
+    # Remove anything in parentheses or brackets
+    return re.sub(r"(\[.*?\]|\(.*?\))", "", author).split(",")[0].strip()
+
+# Function to clean genres
+def clean_genre(genre):
+    # Remove brackets and extra spaces
+    return genre.strip("[]").split(",")[0].strip()
 
 # Function to process the dataset and populate the database
 def process_books(csv_path):
@@ -23,10 +34,15 @@ def process_books(csv_path):
         reader = csv.DictReader(file)
         for row in reader:
             title = row['title']
-            author = row['author']
-            genre = row['genres'].split(',')[0]  # Take the first genre
+            author = clean_author(row['author'])
+            genre = clean_genre(row['genres'])  # Clean the genre
             image_url = row['coverImg']
             image_filename = f"{title.replace(' ', '_')}.jpg"
+
+            # Skip if book already exists in the database
+            if Book.query.filter_by(title=title, author=author).first():
+                print(f"Skipping duplicate book: {title} by {author}")
+                continue
 
             # Download the cover image
             image_filename = download_image(image_url, image_filename)
