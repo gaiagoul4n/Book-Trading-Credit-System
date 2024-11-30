@@ -10,6 +10,36 @@ A second-hand bookstore web application designed for students at my secondary sc
 - **Buy Books**: Use earned credits to purchase books from other students.
 - **Credit-Based System**: No money involved—credits are used to buy and sell books.
 
+- **Dynamic Book Dataset Integration**: The project utilizes a dataset of books to preload the system with a comprehensive catalog, including titles, authors, genres, and cover images.
+- **Image Processing**: Automatically downloads and integrates book cover images from external URLs, ensuring a visually appealing user interface.
+
+---
+
+### Data Processing Workflow
+To preload the system with a catalog of books, the project incorporates advanced data processing techniques:
+
+1. **Dataset Integration**:
+   - Utilized a dataset of books (sourced from [Goodreads BBE Dataset](https://zenodo.org/record/4265096)) containing thousands of entries.
+   - Filtered the dataset to include only English-language books with 14,000+ reviews on goodreads.
+
+2. **Genre Validation**:
+   - Standardized genres to a predefined list to ensure consistency across the application.
+   - Applied conditional logic to handle books with multiple genres or invalid genres.
+
+3. **Image Processing**:
+   - Implemented a script to download and save book cover images from URLs.
+   - Applied fallback logic for cases where image downloads failed, ensuring seamless user experience.
+
+4. **Database Integration**:
+   - Leveraged SQLAlchemy to populate the database with processed book data.
+   - Automated the creation of new entries, including title, author, genre, and cover image, into the SQLite database.
+
+#### Technical Skills Demonstrated:
+- **Data Cleaning and Transformation**: Extracted relevant fields and standardized data from a complex dataset.
+- **API/HTTP Requests**: Automated the retrieval of external resources (book cover images) using the `requests` library.
+- **Database Management**: Designed and populated relational database models using SQLAlchemy.
+- **Error Handling**: Implemented robust error-handling mechanisms for invalid data and failed HTTP requests.
+
 ---
 
 ## How to Install and Run the Project
