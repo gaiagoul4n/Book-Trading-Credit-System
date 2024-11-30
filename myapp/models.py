@@ -1,5 +1,6 @@
 from myapp import db, login_manager
 from flask_login import UserMixin
+from sqlalchemy import UniqueConstraint
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -25,6 +26,7 @@ class Book(db.Model):
     author = db.Column(db.String(50), nullable=False)
     genre = db.Column(db.String(50), nullable=False)
     picture = db.Column(db.String(50))
+    __table_args__ = (UniqueConstraint('title', 'author', name='unique_title_author'),)
 
     def __repr__ (self):
         return f"Book('{self.title}', '{self.author}', '{self.genre}', '{self.picture}')"
