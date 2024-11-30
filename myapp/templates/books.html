@@ -1,39 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1> check by title </h1>
-<div class="content-section">
-  <a class="btn btn-info" href="{{url_for('sell')}}">Add new book</a>
-        <form method="POST" action="" enctype="multipart/form-data">
+<div class="container my-5">
+    <h1 class="text-center text-primary mb-4">Find a Book to List for Sale</h1>
+    <p class="text-center lead">Search for an existing book in the system or select from the list below to pre-fill details.</p>
+
+    <div class="content-section mb-5">
+        <form method="POST" action="" enctype="multipart/form-data" class="p-4 shadow-sm rounded bg-light">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <div class="form-group">
-                        {{ form.title.label(class="form-control-label") }}
-                        {{ form.title(class="form-title form-control-lg") }}
+                <div class="mb-3">
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control form-control-lg") }}
                 </div>
             </fieldset>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
+            <div class="d-grid">
+                {{ form.submit(class="btn btn-primary btn-lg") }}
             </div>
         </form>
+    </div>
+
+    <div class="row g-4">
+        {% for book in books %}
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <img class="card-img-top img-thumbnail" src="{{ url_for('static', filename='book_pics/' + book.picture) }}" alt="Book Image" style="height: 250px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
+                    <p class="card-text"><strong>Genre:</strong> {{ book.genre }}</p>
+                    <a href="{{ url_for('sell', book_id=book.id) }}" class="btn btn-info btn-sm">Select</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-
-<div class="row">
-    {% for book in books %}
-          <div class="col-md-3">
-              <p class="article-content">{{ book.title }}</p>
-              <p class="article-content">{{ book.author }}</p>
-              <p class="article-content">{{ book.genre }}</p>
-              <img class="img-fluid" src="{{ url_for('static', filename='book_pics/' + book.picture) }}">
-              <a class="btn btn-info" href="{{url_for('booksforsale', selling_book_id=book.id)}}">Select</a>
-          </div>
-
-        {%  if loop.index is divisibleby 3 and not loop.last %}
-        </div> <br> <div class="row">
-          {% endif %}
-
-    {% endfor %}
-</div>
-{% endblock content %}
+{% endblock %}
 <!-- will display pics of books and have select button that will take user to books for sale form -->
 <!-- will have check by title form above display and when you press submit it shows the books that match -->
