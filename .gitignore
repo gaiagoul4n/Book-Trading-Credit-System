@@ -11,3 +11,6 @@ __pycache__/
 
 # Logs and temporary files
 *.log
+
+# book pics (too many rn - need to find a good way to deal w this)
+myapp/static/book_pics
